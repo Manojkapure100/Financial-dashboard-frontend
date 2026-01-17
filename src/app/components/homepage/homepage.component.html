@@ -1,0 +1,16 @@
+<div class="center">
+    <h1> Financial market screener </h1>
+    <h3> Stock analysis and screening tool for investors in India. </h3>
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Search for a company" aria-label="Number" matInput [formControl]="myControl"
+                [matAutocomplete]="auto">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onCompanySelected($event)">
+                @for (option of filteredCompanies$ | async; track option.symbol) {
+                <mat-option [value]="option.symbol"> <b> [ {{option.symbol}} ] </b> {{option.name}} </mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+
+</div>
