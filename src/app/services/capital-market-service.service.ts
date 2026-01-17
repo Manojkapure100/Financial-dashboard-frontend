@@ -15,7 +15,7 @@ interface CompanyResponse {
   providedIn: 'root'
 })
 export class CapitalMarketServiceService {
-  private jsonUrl = '/all_nse_stocks.json'; // public folder
+  private jsonUrl = 'all_nse_stocks.json'; // public folder
   // private jsonUrl = 'assets/stocks.json'; // assets folder
   public stockData$: Observable<CompanyInterface[]>;
   
