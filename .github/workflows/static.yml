@@ -44,8 +44,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the built Angular app
-          path: 'dist/financial-dashboard-frontend'
+          # Upload the built Angular app (browser output)
+          path: 'dist/financial-dashboard-frontend/browser'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
