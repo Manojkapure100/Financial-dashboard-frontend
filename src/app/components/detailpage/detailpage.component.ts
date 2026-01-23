@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CapitalMarketServiceService } from '../../services/capital-market-service.service';
 import { map, Observable, of } from 'rxjs';
+import { NGX_ECHARTS_CONFIG, NgxEchartsDirective } from 'ngx-echarts';
+import * as echarts from 'echarts';
 
 interface stockDetail {
   property: string,
@@ -12,11 +14,18 @@ interface stockDetail {
 
 @Component({
   selector: 'app-detailpage',
-  imports: [],
+  imports: [NgxEchartsDirective],
   templateUrl: './detailpage.component.html',
-  styleUrl: './detailpage.component.scss'
+  styleUrl: './detailpage.component.scss',
+  providers: [
+    {
+      provide: NGX_ECHARTS_CONFIG,
+      useValue: { echarts }  // <-- provide the ECharts instance
+    }
+  ]
 })
 export class DetailpageComponent implements OnInit {
+  chartOptions: any;
   symbol!: string | null;
   company!: string | null;
   companies$
@@ -71,12 +80,39 @@ export class DetailpageComponent implements OnInit {
     },
   ];
 
+   stockData: any[] = [
+    ['2026-01-01', 50],
+    ['2026-01-02', 55],
+    ['2026-01-03', 60],
+    ['2026-01-04', 58],
+    ['2026-01-05', 65],
+    ['2026-01-06', 55],
+    ['2026-01-07', 49],
+    ['2026-01-08', 35],
+    ['2026-01-09', 58],
+    ['2026-01-10', 60]
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private capitalMarketService: CapitalMarketServiceService,
   ) {
     this.companies$ = this.capitalMarketService.stockData$;
+    this.chartOptions = {
+      tooltip: { trigger: 'axis' },
+      xAxis: { type: 'time', boundaryGap: false },
+      yAxis: { type: 'value', scale: true },
+      series: [
+        {
+          name: 'Stock Price',
+          type: 'line',
+          smooth: true,
+          data: this.stockData
+        }
+      ],
+      dataZoom: [{ type: 'inside' }, { type: 'slider' }]
+    };
   }
 
   ngOnInit(): void {

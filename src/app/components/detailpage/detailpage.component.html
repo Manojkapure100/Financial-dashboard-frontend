@@ -15,16 +15,24 @@
                 @for (stockDetail of stockDetails; track $index) {
                 <div class="table">
                     <p class="stockProperty"> {{ stockDetail.property }}</p>
-                    <p class="stockValue"> {{stockDetail.valuePrefix }}<b>{{stockDetail.value}}</b> {{stockDetail.valuePostfix}} </p>
+                    <p class="stockValue"> {{stockDetail.valuePrefix }}<b>{{stockDetail.value}}</b>
+                        {{stockDetail.valuePostfix}} </p>
                 </div>
                 }
             </section>
             <section>
                 <h3>About</h3>
-                <p> 
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet repellat odit unde nulla, rerum architecto natus fuga quod atque aliquam ab accusamus? Esse hic mollitia possimus, repellendus culpa quo atque.
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet repellat odit unde nulla, rerum
+                    architecto natus fuga quod atque aliquam ab accusamus? Esse hic mollitia possimus, repellendus culpa
+                    quo atque.
                 </p>
             </section>
+        </div>
+    </section>
+
+    <section id="chart" class="container">
+        <div echarts [options]="chartOptions" style="height: 400px; width: 100%;">
         </div>
     </section>
 
@@ -42,4 +50,5 @@
             </p>
         </section>
     </section>
+
 </main>
