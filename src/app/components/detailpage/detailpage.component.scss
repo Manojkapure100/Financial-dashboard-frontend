@@ -1,0 +1,119 @@
+main {
+    display: block;
+    background-color:aliceblue;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.container {
+    margin: 30px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:flex-start;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.sub-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.sub-container-2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 5px;
+
+    section:nth-child(1) {
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 10px;
+        padding-top: 1px;
+        border: 1px solid black;
+        border-radius: 5px;
+        min-width: 60%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    section:nth-child(2) {
+        padding-inline: 10px;
+        display: flex;
+        align-items:flex-start;
+        min-width: auto;
+        flex-direction: column;
+        justify-content: flex-start;
+
+        >* {
+            margin-bottom: 0px;
+        }
+    }
+}
+
+.table {
+    display: flex;
+    margin-right: 15px;
+    margin-bottom: 5px;
+    justify-content: space-between;
+    gap: 15%;
+    word-break: keep-all;
+    word-wrap: normal;
+}
+
+#latestPrice,
+#todaysUpDown {
+    font-size: large;
+    font-weight: 500;
+}
+
+#todaysUpDown {
+    color: green;
+}
+
+.stockProperty {
+    color: gray;
+}
+
+#pros-cons-section {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items:stretch;
+    
+    >section {
+        width: 50%;
+        min-height: auto;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 10px;
+        border-radius: 10px;
+
+        >* {
+            margin: 5px;
+        }
+
+        :nth-child(1){
+            font-size: larger;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+    }
+    #pros{
+        border: 2px solid green;
+    }
+    #cons{
+        border: 2px solid red;
+    }
+}

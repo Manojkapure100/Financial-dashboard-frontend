@@ -1,0 +1,45 @@
+<main>
+    <section class="container">
+        <div class="sub-container">
+            <h1>{{company}}</h1>
+            <p id="latestPrice">$25.77</p>
+            <p id="todaysUpDown">3.03%</p>
+        </div>
+        <div class="sub-container">
+            <a href="https://example.com"> Company link</a>
+            <a href="https://example.com"> BSE link</a>
+            <a href="https://example.com"> NSE link</a>
+        </div>
+        <div class="sub-container-2">
+            <section>
+                @for (stockDetail of stockDetails; track $index) {
+                <div class="table">
+                    <p class="stockProperty"> {{ stockDetail.property }}</p>
+                    <p class="stockValue"> {{stockDetail.valuePrefix }}<b>{{stockDetail.value}}</b> {{stockDetail.valuePostfix}} </p>
+                </div>
+                }
+            </section>
+            <section>
+                <h3>About</h3>
+                <p> 
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet repellat odit unde nulla, rerum architecto natus fuga quod atque aliquam ab accusamus? Esse hic mollitia possimus, repellendus culpa quo atque.
+                </p>
+            </section>
+        </div>
+    </section>
+
+    <section id="pros-cons-section" class="container">
+        <section id="pros">
+            <p>Pros</p>
+            <p>Company is almost debt free.</p>
+            <p>Company is expected to give good quarter</p>
+            <p>Company has delivered good profit growth of 64.6% CAGR over last 5 years</p>
+        </section>
+        <section id="cons">
+            <p>Cons</p>
+            <p>
+                Stock is trading at 9.86 times its book value
+            </p>
+        </section>
+    </section>
+</main>

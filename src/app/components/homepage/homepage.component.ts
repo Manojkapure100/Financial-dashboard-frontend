@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
 import { CapitalMarketServiceService } from '../../services/capital-market-service.service';
 import { CompanyInterface } from '../../services/capital-market-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -24,6 +25,7 @@ export class HomepageComponent {
   filteredCompanies$: Observable<CompanyInterface[]>;
 
   constructor(
+    private router: Router,
     private capitalMarketService: CapitalMarketServiceService
   ) {
     this.companies$ = this.capitalMarketService.stockData$;
@@ -37,6 +39,7 @@ export class HomepageComponent {
 
   onCompanySelected(event: MatAutocompleteSelectedEvent){
     console.log(event.option.value);
+    this.router.navigate(['/company', event.option.value]);
   }
 
   private _filter(value: string): Observable<CompanyInterface[]> {
