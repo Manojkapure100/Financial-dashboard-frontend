@@ -3,7 +3,31 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CapitalMarketServiceService } from '../../services/capital-market-service.service';
 import { map, Observable, of } from 'rxjs';
 import { NGX_ECHARTS_CONFIG, NgxEchartsDirective } from 'ngx-echarts';
-import * as echarts from 'echarts';
+
+// Import only line chart, tooltip, grid, time axis
+import * as echarts from 'echarts/core';
+import {
+  LineChart
+} from 'echarts/charts';
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DataZoomComponent
+} from 'echarts/components';
+import {
+  CanvasRenderer
+} from 'echarts/renderers';
+
+// Register the parts you need
+echarts.use([
+  LineChart,
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  DataZoomComponent,
+  CanvasRenderer
+]);
 
 interface stockDetail {
   property: string,
