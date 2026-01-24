@@ -18,6 +18,11 @@ main {
     align-items:flex-start;
     background-color: white;
     border-radius: 10px;
+    gap: 10px;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .sub-container {
@@ -53,12 +58,17 @@ main {
         align-items:flex-start;
         min-width: auto;
         flex-direction: column;
-        justify-content: flex-start;
 
         >* {
             margin-bottom: 0px;
         }
     }
+}
+
+.first-child-title :nth-child(1) {
+    font-size: larger;
+    font-weight: 500;
+    margin-bottom: 10px;
 }
 
 .table {
@@ -81,8 +91,13 @@ main {
     color: green;
 }
 
-.stockProperty {
+.stockProperty,
+.stockValue {
     color: gray;
+    b {
+        color: black;
+        font-weight: 500;
+    }
 }
 
 #pros-cons-section {
@@ -103,13 +118,6 @@ main {
         >* {
             margin: 5px;
         }
-
-        :nth-child(1){
-            font-size: larger;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
     }
     #pros{
         border: 2px solid green;
@@ -117,6 +125,10 @@ main {
     #cons{
         border: 2px solid red;
     }
+}
+
+app-stockchart {
+    width: 100%;
 }
 
 @media (max-width: 768px) {

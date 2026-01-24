@@ -2,32 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CapitalMarketServiceService } from '../../services/capital-market-service.service';
 import { map, Observable, of } from 'rxjs';
-import { NGX_ECHARTS_CONFIG, NgxEchartsDirective } from 'ngx-echarts';
-
-// Import only line chart, tooltip, grid, time axis
-import * as echarts from 'echarts/core';
-import {
-  LineChart
-} from 'echarts/charts';
-import {
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DataZoomComponent
-} from 'echarts/components';
-import {
-  CanvasRenderer
-} from 'echarts/renderers';
-
-// Register the parts you need
-echarts.use([
-  LineChart,
-  TitleComponent,
-  TooltipComponent,
-  GridComponent,
-  DataZoomComponent,
-  CanvasRenderer
-]);
+import { StockchartComponent } from '../stockchart/stockchart.component';
+import { ComparisonTableComponent } from '../comparison-table/comparison-table.component';
+import { TimeSeriesTableComponent } from '../time-series-table/time-series-table.component';
 
 interface stockDetail {
   property: string,
@@ -38,15 +15,9 @@ interface stockDetail {
 
 @Component({
   selector: 'app-detailpage',
-  imports: [NgxEchartsDirective],
+  imports: [StockchartComponent, ComparisonTableComponent, TimeSeriesTableComponent],
   templateUrl: './detailpage.component.html',
-  styleUrl: './detailpage.component.scss',
-  providers: [
-    {
-      provide: NGX_ECHARTS_CONFIG,
-      useValue: { echarts }  // <-- provide the ECharts instance
-    }
-  ]
+  styleUrl: './detailpage.component.scss'
 })
 export class DetailpageComponent implements OnInit {
   chartOptions: any;
@@ -116,6 +87,16 @@ export class DetailpageComponent implements OnInit {
     ['2026-01-09', 58],
     ['2026-01-10', 60]
   ];
+
+  pros: string[] = [
+    "Company is almost debt free",
+    "Company is expected to give good quarter",
+    "Company has delivered good profit growth of 64.6% CAGR over last 5 years"
+  ];
+
+  cons: string[] = [
+    "Stock is trading at 9.86 times its book value"
+  ]
 
   constructor(
     private route: ActivatedRoute,
