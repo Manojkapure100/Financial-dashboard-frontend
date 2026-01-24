@@ -8,6 +8,7 @@ import { Component, Input } from '@angular/core';
 })
 export class TimeSeriesTableComponent {
   @Input() symbol: string | null = '';
+  @Input() name!: string;
 
   constructor(){
 

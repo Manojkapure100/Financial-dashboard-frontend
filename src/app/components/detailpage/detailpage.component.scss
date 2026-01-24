@@ -39,6 +39,7 @@ main {
     flex-direction: row;
     justify-content: flex-start;
     gap: 5px;
+    width: 100%;
 
     section:nth-child(1) {
         margin-top: 10px;
@@ -58,6 +59,7 @@ main {
         align-items:flex-start;
         min-width: auto;
         flex-direction: column;
+        box-sizing: border-box;
 
         >* {
             margin-bottom: 0px;
@@ -93,6 +95,7 @@ main {
 
 .stockProperty,
 .stockValue {
+    white-space: nowrap;
     color: gray;
     b {
         color: black;
@@ -127,7 +130,9 @@ main {
     }
 }
 
-app-stockchart {
+app-stockchart,
+app-comparison-table,
+app-time-series-table {
     width: 100%;
 }
 

@@ -15,7 +15,11 @@ interface stockDetail {
 
 @Component({
   selector: 'app-detailpage',
-  imports: [StockchartComponent, ComparisonTableComponent, TimeSeriesTableComponent],
+  imports: [
+    StockchartComponent, 
+    ComparisonTableComponent, 
+    // TimeSeriesTableComponent
+  ],
   templateUrl: './detailpage.component.html',
   styleUrl: './detailpage.component.scss'
 })

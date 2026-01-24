@@ -39,23 +39,31 @@
         <section id="pros" class="first-child-title">
             <p>Pros</p>
             @for (pro of pros; track $index) {
-                <p> {{ pro }}</p>
+            <p> {{ pro }}</p>
             }
         </section>
         <section id="cons" class="first-child-title">
             <p>Cons</p>
             @for (con of cons; track $index) {
-                <p> {{ con }}</p>
+            <p> {{ con }}</p>
             }
         </section>
     </section>
 
     <section class="container">
-        <app-comparison-table [symbol]="symbol"></app-comparison-table>
+        <app-comparison-table [name]="'Peer-comparison'" [symbol]="symbol"></app-comparison-table>
+    </section>
+
+    <!--
+
+    <section class="container">
+        <app-time-series-table [name]="'Quarterly Results'" [symbol]="symbol"></app-time-series-table>
     </section>
 
     <section class="container">
-        <app-time-series-table [symbol]="symbol"></app-time-series-table>
+        <app-time-series-table [name]="'Profit loss'" [symbol]="symbol"></app-time-series-table>
     </section>
+
+    -->
 
 </main>
