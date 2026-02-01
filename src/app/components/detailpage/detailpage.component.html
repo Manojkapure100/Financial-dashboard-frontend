@@ -12,11 +12,10 @@
         </div>
         <div class="sub-container-2">
             <section>
-                @for (stockDetail of stockDetails; track $index) {
+                @for (stockDetail of stockFinancialRatios.latest.ratios | keyvalue; track stockDetail.key) {
                 <div class="table">
-                    <p class="stockProperty"> {{ stockDetail.property }}</p>
-                    <p class="stockValue"> {{stockDetail.valuePrefix }} <b>{{stockDetail.value}}</b>
-                        {{stockDetail.valuePostfix}} </p>
+                    <p class="stockProperty"> {{ stockDetail.key }}</p>
+                    <p class="stockValue"> {{stockDetail.value | number:'1.2-2' }} </p>
                 </div>
                 }
             </section>
