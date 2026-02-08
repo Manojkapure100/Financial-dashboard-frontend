@@ -87,17 +87,22 @@ main {
 .stockValue {
     white-space: nowrap;
     color: gray;
+    text-transform: capitalize;
 }
 
 
 #latestPrice,
-#todaysUpDown {
+.todaysUpDown {
     font-size: large;
     font-weight: 500;
 }
 
-#todaysUpDown {
-    color: green;
+.greenTextColor {
+    color: green
+}
+
+.redTextColor {
+    color: red;
 }
 
 #pros-cons-section {

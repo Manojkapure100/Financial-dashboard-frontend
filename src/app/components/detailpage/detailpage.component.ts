@@ -4,8 +4,8 @@ import { CapitalMarketServiceService, FinancialRatioResponse, stockDetail } from
 import { map, Observable, of } from 'rxjs';
 import { StockchartComponent } from '../stockchart/stockchart.component';
 import { ComparisonTableComponent } from '../comparison-table/comparison-table.component';
-import { TimeSeriesTableComponent } from '../time-series-table/time-series-table.component';
-import { KeyValuePipe, DecimalPipe } from '@angular/common';
+// import { TimeSeriesTableComponent } from '../time-series-table/time-series-table.component';
+import { KeyValuePipe, DecimalPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-detailpage',
@@ -14,6 +14,7 @@ import { KeyValuePipe, DecimalPipe } from '@angular/common';
     ComparisonTableComponent, 
     KeyValuePipe,
     DecimalPipe,
+    CommonModule
     // TimeSeriesTableComponent
   ],
   templateUrl: './detailpage.component.html',
@@ -25,6 +26,10 @@ export class DetailpageComponent implements OnInit {
   company!: string | null;
   companies$
   stockFinancialRatios!: FinancialRatioResponse;
+
+  stockPrice = 0.00;
+  stockChangeInPersantage = 0.00;
+  stockChangeInValue = 0.00;
 
   stockData: any[] = [
     ['2026-01-01', 50],
@@ -93,6 +98,14 @@ export class DetailpageComponent implements OnInit {
   
   async updateContent(symbol: string) {
     await this.getFinancialRatio(symbol);
+    await this.getCurrentPriceAndPersantage(symbol);
+  }
+
+  async getCurrentPriceAndPersantage(symbol: string){
+    const response = await this.capitalMarketService.getCurrentPriceAndPersantage(symbol);
+    this.stockPrice = response.ltp;
+    this.stockChangeInPersantage = response.percentChange;
+    this.stockChangeInValue = response.netChange;
   }
 
   async getFinancialRatio(symbol: string) {

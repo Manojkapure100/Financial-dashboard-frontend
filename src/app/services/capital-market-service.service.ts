@@ -75,6 +75,15 @@ export class CapitalMarketServiceService {
     );
   }
 
+  async getCurrentPriceAndPersantage(stockSymbol: string) {
+    const endpoint = `/market/stock/${stockSymbol}`;
+    const response = await firstValueFrom(this.http.get<any>(`${this.baseUrl}${endpoint}`));
+    if(!response.body.status){
+      throw new Error(response.body.message)
+    }
+    return response.body.data.fetched[0];
+  }
+
   async getStockDetail(stockSymbol: string) {
     const endpoint = `/capitalmarket/company/${stockSymbol}`;
     // Use any instead of any[]

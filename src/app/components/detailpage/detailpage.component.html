@@ -2,21 +2,21 @@
     <section class="container">
         <div class="sub-container">
             <h1 class="text-center">{{company}}</h1>
-            <p id="latestPrice">$ 25.77</p>
-            <p id="todaysUpDown">3.03 %</p>
+            <p id="latestPrice">₹{{stockPrice}}</p>
+            <p class="todaysUpDown" [ngClass]="{'greenTextColor': stockChangeInPersantage > 0,'redTextColor': stockChangeInPersantage < 0}"> {{stockChangeInPersantage}}%</p>
+            <p class="todaysUpDown" [ngClass]="{'greenTextColor': stockChangeInValue > 0,'redTextColor': stockChangeInValue < 0}">₹{{stockChangeInValue}}</p>
         </div>
-        <div class="sub-container">
-            <a href="https://example.com"> Company link</a>
-            <a href="https://example.com"> BSE link</a>
-            <a href="https://example.com"> NSE link</a>
-        </div>
+        <!-- <div class="sub-container">
+        </div> -->
         <div class="sub-container-2">
             <section>
-                @for (stockDetail of stockFinancialRatios.latest.ratios | keyvalue; track stockDetail.key) {
-                <div class="table">
-                    <p class="stockProperty"> {{ stockDetail.key }}</p>
-                    <p class="stockValue"> {{stockDetail.value | number:'1.2-2' }} </p>
-                </div>
+                @if (stockFinancialRatios && stockFinancialRatios.latest && stockFinancialRatios.latest.ratios && stockFinancialRatios.latest.ratios.assetTurnover != undefined) {
+                    @for (stockDetail of stockFinancialRatios.latest.ratios | keyvalue; track stockDetail.key) {
+                        <div class="table">
+                            <p class="stockProperty"> {{ stockDetail.key }}</p>
+                            <p class="stockValue"> {{stockDetail.value | number:'1.2-2' }} </p>
+                        </div>
+                    } 
                 }
             </section>
             <section class="first-child-title">
