@@ -18,6 +18,11 @@ main {
     align-items:flex-start;
     background-color: white;
     border-radius: 10px;
+    gap: 10px;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .sub-container {
@@ -34,6 +39,7 @@ main {
     flex-direction: row;
     justify-content: flex-start;
     gap: 5px;
+    width: 100%;
 
     section:nth-child(1) {
         margin-top: 10px;
@@ -44,7 +50,7 @@ main {
         border-radius: 5px;
         min-width: 60%;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     }
 
     section:nth-child(2) {
@@ -53,12 +59,18 @@ main {
         align-items:flex-start;
         min-width: auto;
         flex-direction: column;
-        justify-content: flex-start;
+        box-sizing: border-box;
 
         >* {
             margin-bottom: 0px;
         }
     }
+}
+
+.first-child-title :nth-child(1) {
+    font-size: larger;
+    font-weight: 500;
+    margin-bottom: 10px;
 }
 
 .table {
@@ -71,18 +83,26 @@ main {
     word-wrap: normal;
 }
 
+.stockProperty,
+.stockValue {
+    white-space: nowrap;
+    color: gray;
+    text-transform: capitalize;
+}
+
+
 #latestPrice,
-#todaysUpDown {
+.todaysUpDown {
     font-size: large;
     font-weight: 500;
 }
 
-#todaysUpDown {
-    color: green;
+.greenTextColor {
+    color: green
 }
 
-.stockProperty {
-    color: gray;
+.redTextColor {
+    color: red;
 }
 
 #pros-cons-section {
@@ -103,13 +123,6 @@ main {
         >* {
             margin: 5px;
         }
-
-        :nth-child(1){
-            font-size: larger;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-
     }
     #pros{
         border: 2px solid green;
@@ -117,6 +130,12 @@ main {
     #cons{
         border: 2px solid red;
     }
+}
+
+app-stockchart,
+app-comparison-table,
+app-time-series-table {
+    width: 100%;
 }
 
 @media (max-width: 768px) {
