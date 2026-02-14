@@ -26,6 +26,7 @@ export class DetailpageComponent implements OnInit {
   company!: string | null;
   companies$
   stockFinancialRatios!: FinancialRatioResponse;
+  companyDesc!: string | null;
 
   stockPrice = 0.00;
   stockChangeInPersantage = 0.00;
@@ -99,6 +100,11 @@ export class DetailpageComponent implements OnInit {
   async updateContent(symbol: string) {
     await this.getFinancialRatio(symbol);
     await this.getCurrentPriceAndPersantage(symbol);
+    await this.getCompanyDescription();
+  }
+
+  async getCompanyDescription(){
+    this.companyDesc = this.capitalMarketService.StockCompanyDetail
   }
 
   async getCurrentPriceAndPersantage(symbol: string){
