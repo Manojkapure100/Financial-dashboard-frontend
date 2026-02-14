@@ -10,21 +10,27 @@
         </div> -->
         <div class="sub-container-2">
             <section>
-                @if (stockFinancialRatios && stockFinancialRatios.latest && stockFinancialRatios.latest.ratios && stockFinancialRatios.latest.ratios.assetTurnover != undefined) {
+                @if (stockFinancialRatios && stockFinancialRatios.latest && stockFinancialRatios.latest.ratios) {
                     @for (stockDetail of stockFinancialRatios.latest.ratios | keyvalue; track stockDetail.key) {
-                        <div class="table">
-                            <p class="stockProperty"> {{ stockDetail.key }}</p>
-                            <p class="stockValue"> {{stockDetail.value | number:'1.2-2' }} </p>
-                        </div>
-                    } 
+                        @if (stockDetail.value != null){
+                            <div class="table">
+                                <p class="stockProperty"> {{ stockDetail.key }}</p>
+                                <p class="stockValue"> {{stockDetail.value | number:'1.2-2' }} </p>
+                            </div>
+                        }
+                    }
                 }
             </section>
             <section class="first-child-title">
                 <p>About</p>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet repellat odit unde nulla, rerum
-                    architecto natus fuga quod atque aliquam ab accusamus? Esse hic mollitia possimus, repellendus culpa
-                    quo atque.
+                    @if (companyDesc) {
+                        {{ companyDesc }}
+                    } @else {
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet repellat odit unde nulla, rerum
+                        architecto natus fuga quod atque aliquam ab accusamus? Esse hic mollitia possimus, repellendus culpa
+                        quo atque.
+                    }
                 </p>
             </section>
         </div>

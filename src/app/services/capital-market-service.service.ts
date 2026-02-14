@@ -59,10 +59,16 @@ export interface FinancialRatioResponse {
 })
 export class CapitalMarketServiceService {
   private jsonUrl = 'all_nse_stocks.json'; // public folder and 'assets/stocks.json'; for assets folder
-  private readonly baseUrl = 'https://financial-dashboard-backend-w939.onrender.com/api/v1'; // https://financial-dashboard-backend-w939.onrender.com/ and http://localhost
+  // private readonly baseUrl = 'http://localhost:8000/api/v1'; 
+  private readonly baseUrl = 'https://financial-dashboard-backend-w939.onrender.com/api/v1';
   private stockDetail: any | undefined = [];
   public stockData$: Observable<CompanyInterface[]>;
   _financialRatio!: FinancialRatioResponse;
+
+  get StockCompanyDetail(): string {
+    const detail = this.stockDetail?.data?.Info?.companyProfile?.companyDescription;
+    return detail;
+  }
 
   get financialRatio(): FinancialRatioResponse {
     return this._financialRatio;
