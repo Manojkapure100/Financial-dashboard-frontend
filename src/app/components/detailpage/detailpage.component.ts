@@ -100,11 +100,13 @@ export class DetailpageComponent implements OnInit {
   async updateContent(symbol: string) {
     await this.getFinancialRatio(symbol);
     await this.getCurrentPriceAndPersantage(symbol);
-    await this.getCompanyDescription();
+    await this.getCompanyDescription(symbol);
   }
 
-  async getCompanyDescription(){
-    this.companyDesc = this.capitalMarketService.StockCompanyDetail
+  async getCompanyDescription(symbol: string){
+    this.capitalMarketService.getCompanyDescription(symbol).subscribe((resp)=>{
+      this.companyDesc = resp.body
+    });
   }
 
   async getCurrentPriceAndPersantage(symbol: string){
@@ -114,9 +116,13 @@ export class DetailpageComponent implements OnInit {
     this.stockChangeInValue = response.netChange;
   }
 
-  async getFinancialRatio(symbol: string) {
-    await this.capitalMarketService.getFinancialRatio(symbol);
-    this.stockFinancialRatios = this.capitalMarketService.financialRatio;
+  getFinancialRatio(symbol: string) {
+    this.capitalMarketService.getFinancialRatio(symbol).subscribe((resp)=>{
+      this.stockFinancialRatios = {
+        latest: resp.body[0],
+        history: resp.body.slice(0, 5).reverse()
+      }
+    });
   }
 
   isParamValid(params: string | null): Observable<boolean> {
