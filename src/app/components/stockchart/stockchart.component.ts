@@ -58,9 +58,7 @@ export class StockchartComponent implements OnInit {
 
   constructor(
     private capitalMarketService: CapitalMarketServiceService
-  ) {
-    this.loadIntervals()
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     setTimeout(async () => {
@@ -99,7 +97,6 @@ export class StockchartComponent implements OnInit {
   }
 
   async loadContent() {
-    await this.loadIntervals()
     await this.loadChart()
   }
 
@@ -131,7 +128,6 @@ export class StockchartComponent implements OnInit {
   async loadIntervals() {
     this.capitalMarketService.getIntervals().subscribe(
       (data: any) => {
-        console.log(data);
         if (data.body && data.body.intervals) {
           this.intervals = data.body.intervals.map((i: any) => i.name);
           this.selectedInterval = this.intervals[this.intervals.length - 1];
@@ -139,7 +135,6 @@ export class StockchartComponent implements OnInit {
           this.intervals = [];
           this.selectedInterval = ''
         }
-        console.log('Interval names:', this.intervals);
       },
       (error) => {
         console.error('Error fetching intervals:', error);
