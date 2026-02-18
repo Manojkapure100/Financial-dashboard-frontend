@@ -1,0 +1,25 @@
+#main{
+    display: flex;
+    flex-direction: column;
+}
+
+#controller {
+    display: flex;
+    // align-items: center;
+    gap: 16px;
+    padding: 10px 20px;
+}
+
+#intrerval {
+    width: 170px;
+}
+
+#daterange {
+    width: 300px;
+}
+
+button {
+    height: 56px;
+    padding: 0 20px;
+    border-radius: 8px;
+}
