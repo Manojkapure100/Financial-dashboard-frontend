@@ -3,68 +3,96 @@ import { NGX_ECHARTS_CONFIG, NgxEchartsDirective } from 'ngx-echarts';
 
 import * as echarts from 'echarts/core';
 import {
-  LineChart
+  CandlestickChart, BarChart
 } from 'echarts/charts';
 import {
   TitleComponent,
   TooltipComponent,
   GridComponent,
-  DataZoomComponent
+  DataZoomComponent,
+  DatasetComponent,
+  ToolboxComponent,
+  VisualMapComponent,
 } from 'echarts/components';
 import {
   CanvasRenderer
 } from 'echarts/renderers';
 import { CapitalMarketServiceService, Interval } from '../../services/capital-market-service.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 echarts.use([
-  LineChart,
+  DatasetComponent,
+  ToolboxComponent,
+  VisualMapComponent,
   TitleComponent,
   TooltipComponent,
   GridComponent,
   DataZoomComponent,
-  CanvasRenderer
+  CanvasRenderer,
+  CandlestickChart,
+  BarChart
 ]);
+
+export interface stockData {
+  timestamp: string,
+  open: number,
+  high: number,
+  low: number,
+  close: number,
+  volume: number,
+};
+
+export interface getStockPriceListRequest {
+  symbol: string | null,
+  interval: string,
+  fromDate: string,
+  toDate: string
+}
 
 @Component({
   selector: 'app-stockchart',
-  imports: [NgxEchartsDirective],
+  imports: [NgxEchartsDirective, MatFormFieldModule, MatSelectModule, MatInputModule, MatDatepickerModule, FormsModule, ReactiveFormsModule],
   templateUrl: './stockchart.component.html',
   styleUrl: './stockchart.component.scss',
   providers: [
+    provideNativeDateAdapter(),
     {
       provide: NGX_ECHARTS_CONFIG,
       useValue: { echarts }
     }
-  ]
+  ],
 })
 export class StockchartComponent implements OnInit {
   @Input() symbol!: string | null;
+  selectedInterval!: string
 
   intervals!: string[]
-  selectedInterval!: string
   chartOptions: any;
-  stockData: any[] = [
-    ['2026-01-01', 50],
-    ['2026-01-02', 55],
-    ['2026-01-03', 60],
-    ['2026-01-04', 58],
-    ['2026-01-05', 65],
-    ['2026-01-06', 55],
-    ['2026-01-07', 49],
-    ['2026-01-08', 35],
-    ['2026-01-09', 58],
-    ['2026-01-10', 60]
-  ];
+  updateOption: any;
+  stockData: stockData[] = [];
+
+  readonly range!: FormGroup;
 
   constructor(
     private capitalMarketService: CapitalMarketServiceService
-  ) {}
+  ) {
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    this.range = new FormGroup({
+      fromDate: new FormControl<Date>(thirtyDaysAgo),
+      toDate: new FormControl<Date>(today),
+    });
+  }
 
   async ngOnInit(): Promise<void> {
-    setTimeout(async () => {
-      await this.fetchChartByDefaultValue()
-      this.loadContent()
-    });
+    await this.loadIntervals();
   }
 
   formatDate(date: Date): string {
@@ -77,51 +105,130 @@ export class StockchartComponent implements OnInit {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
 
-  async fetchChartByDefaultValue() {
-    await this.loadIntervals()
-    let toDate = new Date();
-    let fromDate = new Date();
-    fromDate.setDate(toDate.getDate() - 30);
-    const request = {
-      "symbol": this.symbol,
-      "interval": this.selectedInterval,
-      "fromDate": this.formatDate(fromDate),
-      "toDate": this.formatDate(toDate)
+  getStockPriceList() {
+    const request: getStockPriceListRequest = {
+      symbol: this.symbol,
+      interval: this.selectedInterval,
+      fromDate: this.formatDate(this.range.controls['fromDate'].value),
+      toDate: this.formatDate(this.range.controls['toDate'].value)
     }
+
     this.capitalMarketService.getStockPriceList(request.symbol, request.interval, request.fromDate, request.toDate).subscribe(
       (response) => {
-        this.handleStockData(response.body.data);
+        this.updateChart(response.body.data);
       },
       (error) => console.error('Error fetching stock prices:', error)
     );
   }
 
-  async loadContent() {
-    await this.loadChart()
-  }
-
-  handleStockData(data: any[]) {
-    this.stockData = [];
-    data.forEach(e=>{
-      this.stockData.push([e[0], e[1]])
-    });
-    this.loadChart();
+  updateChart(data: any[]) {
+    this.updateOption = {
+      dataset: {
+        source: data
+      }
+    };
   }
 
   async loadChart() {
+    const downColor = '#ec0000';
+    const downBorderColor = '#8A0000';
+    const upColor = '#00da3c';
+    const upBorderColor = '#008F28';
+
     this.chartOptions = {
-      tooltip: { trigger: 'axis' },
-      xAxis: { type: 'time', boundaryGap: false },
-      yAxis: { type: 'value', scale: true },
-      series: [
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'cross' }
+      },
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: false
+          }
+        }
+      },
+      grid: [
         {
-          name: 'Stock Price',
-          type: 'line',
-          smooth: true,
-          data: this.stockData
+          left: '10%',
+          right: '10%',
+          bottom: 200
+        },
+        {
+          left: '10%',
+          right: '10%',
+          height: 80,
+          bottom: 80
         }
       ],
-      dataZoom: [{ type: 'inside' }, { type: 'slider' }]
+
+      xAxis: [
+        {
+          type: 'time',
+          boundaryGap: false,
+          axisLine: { onZero: false }
+        },
+        {
+          type: 'time',
+          gridIndex: 1,
+          boundaryGap: false,
+          axisLine: { onZero: false },
+          axisTick: { show: false },
+          axisLabel: { show: false }
+        }
+      ],
+
+      yAxis: [
+        {
+          scale: true
+        },
+        {
+          scale: true,
+          gridIndex: 1,
+          splitNumber: 2,
+          axisLabel: { show: false },
+          axisLine: { show: false },
+          axisTick: { show: false },
+          splitLine: { show: false }
+        }
+      ],
+
+      dataZoom: [
+        {
+          type: 'inside',
+          xAxisIndex: [0, 1]
+        },
+        {
+          type: 'slider',
+          xAxisIndex: [0, 1]
+        }
+      ],
+
+      series: [
+        {
+          name: 'Candlestick',
+          type: 'candlestick',
+          itemStyle: {
+            color: upColor,
+            color0: downColor,
+            borderColor: upBorderColor,
+            borderColor0: downBorderColor
+          },
+          encode: {
+            x: 0,
+            y: [1, 4, 3, 2] // [open, close, low, high] expected by echart
+          }
+        },
+        {
+          name: 'Volume',
+          type: 'bar',
+          xAxisIndex: 1,
+          yAxisIndex: 1,
+          encode: {
+            x: 0,
+            y: 5
+          }
+        }
+      ]
     };
   }
 
@@ -131,6 +238,8 @@ export class StockchartComponent implements OnInit {
         if (data.body && data.body.intervals) {
           this.intervals = data.body.intervals.map((i: any) => i.name);
           this.selectedInterval = this.intervals[this.intervals.length - 1];
+          this.loadChart();
+          this.getStockPriceList();
         } else {
           this.intervals = [];
           this.selectedInterval = ''

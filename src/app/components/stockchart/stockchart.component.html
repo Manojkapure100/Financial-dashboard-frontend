@@ -1,2 +1,24 @@
-<div echarts [options]="chartOptions" style="height: 400px; width: 100%;">
-</div>
+<section id="main">
+    <div id="controller">
+        <mat-form-field id="interval" appearance="outline">
+            <mat-label>Select Intervals</mat-label>
+            <mat-select [(value)]="selectedInterval">
+                @for (interval of intervals; track interval) {
+                <mat-option [value]="interval">{{interval}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field id="daterange" appearance="outline">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                <input matStartDate formControlName="fromDate" placeholder="Start date">
+                <input matEndDate formControlName="toDate" placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <button (click)="getStockPriceList()"> Update </button>
+    </div>
+    <div echarts [options]="chartOptions" [merge]="updateOption" style="height: 400px; width: 100%;">
+    </div>
+</section>
