@@ -75,8 +75,8 @@ export class CapitalMarketServiceService {
     );
   }
 
-  async getCurrentPriceAndPersantage(stockSymbol: string) {
-    const endpoint = `/market/stock/${stockSymbol}`;
+  async getCurrentPriceAndPersentage(stockSymbol: string) {
+    const endpoint = `/capitalmarket/stock/${stockSymbol}/currentPriceAndPersentage`;
     const response = await firstValueFrom(this.http.get<any>(`${this.baseUrl}${endpoint}`));
     if (!response.body.status) {
       throw new Error(response.body.message)
@@ -85,18 +85,18 @@ export class CapitalMarketServiceService {
   }
 
   async getStockDetail(stockSymbol: string) {
-    const endpoint = `/capitalmarket/company/${stockSymbol}`;
+    const endpoint = `/capitalmarket/stock/${stockSymbol}`;
     // Use any instead of any[]
     this.stockDetail = await firstValueFrom(this.http.get<any>(`${this.baseUrl}${endpoint}`));
   }
 
   getIntervals(): Observable<Interval[]> {
-    const endpoint = '/market/intervals';
+    const endpoint = `/capitalmarket/intervals`;
     return this.http.get<any>(`${this.baseUrl}${endpoint}`);
   }
 
   getStockPriceList(symbol: string | null,interval: string,fromdate: string,todate: string) {
-    const endpoint = '/market/stock/priceList';
+    const endpoint = `/capitalmarket/stock/priceList`;
     const requestBody = {
       "symbol": symbol || 'HBLENGINE',
       "interval": interval || 'ONE_DAY',
@@ -107,12 +107,17 @@ export class CapitalMarketServiceService {
   }
 
   getFinancialRatio(stockSymbol: string) {
-    const endpoint = `/capitalmarket/company/${stockSymbol}/financialRatio`;
+    const endpoint = `/capitalmarket/stock/${stockSymbol}/financialRatio`;
     return this.http.get<any>(`${this.baseUrl}${endpoint}`);
   }
 
   getCompanyDescription(stockSymbol: string) {
-    const endpoint = `/capitalmarket/company/${stockSymbol}/description`;
+    const endpoint = `/capitalmarket/stock/${stockSymbol}/description`;
+    return this.http.get<any>(`${this.baseUrl}${endpoint}`);
+  }
+
+  getSimilarStock(stockSymbol: string) {
+    const endpoint = `/capitalmarket/stock/${stockSymbol}/similar`;
     return this.http.get<any>(`${this.baseUrl}${endpoint}`);
   }
 }

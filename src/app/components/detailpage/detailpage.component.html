@@ -3,11 +3,10 @@
         <div class="sub-container">
             <h1 class="text-center">{{company}}</h1>
             <p id="latestPrice">₹{{stockPrice}}</p>
-            <p class="todaysUpDown" [ngClass]="{'greenTextColor': stockChangeInPersantage > 0,'redTextColor': stockChangeInPersantage < 0}"> {{stockChangeInPersantage}}%</p>
-            <p class="todaysUpDown" [ngClass]="{'greenTextColor': stockChangeInValue > 0,'redTextColor': stockChangeInValue < 0}">₹{{stockChangeInValue}}</p>
+            <p class="todaysUpDown" [ngClass]="{'greenTextColor': isStockPricePositive,'redTextColor': !isStockPricePositive}"> {{stockChangeInPersantage}}%</p>
+            <p class="todaysUpDown" [ngClass]="{'greenTextColor': isStockPricePositive,'redTextColor': !isStockPricePositive}">₹{{stockChangeInValue}}</p>
         </div>
-        <!-- <div class="sub-container">
-        </div> -->
+
         <div class="sub-container-2">
             <section>
                 @if (stockFinancialRatios && stockFinancialRatios.latest && stockFinancialRatios.latest.ratios) {
