@@ -27,6 +27,8 @@ export class DetailpageComponent implements OnInit {
   companies$
   stockFinancialRatios!: FinancialRatioResponse;
   companyDesc!: string | null;
+  isStockPricePositive: boolean = false;
+  similarStocks!: any[]
 
   stockPrice = 0.00;
   stockChangeInPersantage = 0.00;
@@ -61,24 +63,6 @@ export class DetailpageComponent implements OnInit {
     private capitalMarketService: CapitalMarketServiceService,
   ) {
     this.companies$ = this.capitalMarketService.stockData$;
-    this.initialiseChart();
-  }
-
-  initialiseChart(){
-    this.chartOptions = {
-      tooltip: { trigger: 'axis' },
-      xAxis: { type: 'time', boundaryGap: false },
-      yAxis: { type: 'value', scale: true },
-      series: [
-        {
-          name: 'Stock Price',
-          type: 'line',
-          smooth: true,
-          data: this.stockData
-        }
-      ],
-      dataZoom: [{ type: 'inside' }, { type: 'slider' }]
-    };
   }
 
   ngOnInit(): void {
@@ -99,7 +83,7 @@ export class DetailpageComponent implements OnInit {
   
   async updateContent(symbol: string) {
     await this.getFinancialRatio(symbol);
-    await this.getCurrentPriceAndPersantage(symbol);
+    await this.getCurrentPriceAndPersentage(symbol);
     await this.getCompanyDescription(symbol);
   }
 
@@ -109,11 +93,13 @@ export class DetailpageComponent implements OnInit {
     });
   }
 
-  async getCurrentPriceAndPersantage(symbol: string){
-    const response = await this.capitalMarketService.getCurrentPriceAndPersantage(symbol);
+  async getCurrentPriceAndPersentage(symbol: string){
+    const response = await this.capitalMarketService.getCurrentPriceAndPersentage(symbol);
     this.stockPrice = response.ltp;
-    this.stockChangeInPersantage = response.percentChange;
-    this.stockChangeInValue = response.netChange;
+    this.stockChangeInPersantage = Math.abs(+response.percentChange);
+    this.stockChangeInValue = Math.abs(+response.netChange);
+    console.log('response.netChange',response.netChange);
+    this.isStockPricePositive = response.netChange > 0 ? true : false;
   }
 
   getFinancialRatio(symbol: string) {

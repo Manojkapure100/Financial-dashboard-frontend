@@ -1,14 +1,14 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatTable, MatTableModule} from '@angular/material/table';
-import {MatIconModule} from '@angular/material/icon';
+import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { CapitalMarketServiceService } from '../../services/capital-market-service.service';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
+export interface SimilarStock {
   symbol: string;
-  quantity: number;
+  companyName: string;
+  price: number;
+  mktCap: number;
 }
 
 @Component({
@@ -17,41 +17,52 @@ export interface PeriodicElement {
   templateUrl: './comparison-table.component.html',
   styleUrl: './comparison-table.component.scss'
 })
-export class ComparisonTableComponent implements OnInit{
-  @Input() symbol!: string | null
+export class ComparisonTableComponent implements OnInit {
+  _symbol: string | null = null;
   @Input() name!: string;
+  
+  @Input()
+  set symbol(value: string | null) {
+    this._symbol = value;
+    if (value) {
+      console.log("Value changed", value);
+      this.getSimilarStock();
+    }
+  }
 
-  ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', quantity: 100},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He', quantity: 100},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li', quantity: 100},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be', quantity: 100},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B', quantity: 100},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C', quantity: 100},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N', quantity: 100},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O', quantity: 100},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F', quantity: 100},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', quantity: 100},
-];
+  similarStocks!: any[];
 
+  @ViewChild('table', { static: true }) table!: MatTable<SimilarStock>;
 
-  @ViewChild('table', { static: true }) table!: MatTable<PeriodicElement>;
-
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'quantity'];
-  dataSource = this.ELEMENT_DATA;
+  displayedColumns: string[] = ['symbol', 'companyName', 'price', 'mktCap'];
+  dataSource!: SimilarStock[];
 
   drop(event: CdkDragDrop<string>) {
     const previousIndex = this.dataSource.findIndex(d => d === event.item.data);
-
     moveItemInArray(this.dataSource, previousIndex, event.currentIndex);
     this.table.renderRows();
   }
 
-  constructor() {
-    //constructor
-  }
+  constructor(
+    private capitalMarketService: CapitalMarketServiceService
+  ) {}
 
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
+    //
+  }
+
+  handleResponse(resp: SimilarStock[]){
+    resp = resp.filter(stock=> stock.symbol.includes('.NS'));
+    this.dataSource = resp;
+  }
+
+  getSimilarStock() {
+    if(this._symbol){
+      this.capitalMarketService.getSimilarStock(this._symbol).subscribe((resp) => {
+        this.handleResponse(resp.body);
+      });
+    } else {
+      console.log("not found");
+    }
   }
 }
